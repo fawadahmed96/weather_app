@@ -91,18 +91,18 @@ class _HomeState extends State<Home> {
       if (temp > 25) {
         show = 'It\'s 🍦 time';
       } else if (temp > 20) {
-        show = 'It\'s 🍦 time';
+        show = 'Time for shorts and 👕';
       } else if (temp < 10) {
-        show = 'It\'s 🍦 time';
+        show = 'You\'ll need 🧣 and 🧤';
       } else {
-        show = 'It\'s 🍦 time';
+        show = 'Bring a 🧥 just in case';
       }
     });
   }
 
   Future<void> getWeather() async {
     http.Response response = await http.get(
-        'http://api.openweathermap.org/data/2.5/weather?q=city&units=metric&appid={api}');
+        'http://api.openweathermap.org/data/2.5/weather?q=Karachi&units=metric&appid=c089c9b959d2afef98b68f72c0ffeb10');
     var results = jsonDecode(response.body);
     setState(() {
       temp = results['main']['temp'];
@@ -116,8 +116,9 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    getWeather();
-    getMessage();
+    getWeather().then((_) {
+      getMessage();
+    });
   }
 
   @override
@@ -135,7 +136,7 @@ class _HomeState extends State<Home> {
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.0),
                   child: Text(
-                    "Currently",
+                    "Currently in Karachi",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 14.0,
@@ -143,23 +144,12 @@ class _HomeState extends State<Home> {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text(
-                      temp != null ? temp.toString() + "\u00B0" : "Loading",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40.0,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    FlatButton(
-                      child: Text(show),
-                      onPressed: () {
-                        getMessage();
-                      },
-                    ),
-                  ],
+                Text(
+                  temp != null ? temp.toString() + "\u00B0" : "Loading",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 40.0,
+                      fontWeight: FontWeight.w600),
                 ),
                 Padding(
                   padding: EdgeInsets.only(bottom: 10.0),
@@ -170,6 +160,14 @@ class _HomeState extends State<Home> {
                       fontSize: 14.0,
                       fontWeight: FontWeight.w600,
                     ),
+                  ),
+                ),
+                Text(
+                  show,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ],
